@@ -29,7 +29,7 @@ import { sleep } from "./utils";
 import { ClientRelayerTransactionResponse } from "./response";
 import { ContractConfig, getContractConfig } from "./config";
 import { BuilderConfig, BuilderHeaderPayload } from "@polymarket/builder-signing-sdk";
-import { SAFE_DEPLOYED, SAFE_NOT_DEPLOYED, SIGNER_UNAVAILABLE } from "./errors";
+import { SAFE_NOT_DEPLOYED, SIGNER_UNAVAILABLE } from "./errors"; // SAFE_DEPLOYED,
 
 // Type imports for Privy (optional - only used if WalletWithMetadata is provided)
 type PrivyClient = any;
@@ -399,14 +399,15 @@ export class RelayClient {
      * Deploys a safe
      * @returns
      */
-    public async deploy(): Promise<RelayerTransactionResponse> {
+    public async deploy(): Promise<RelayerTransactionResponse | string> {
         this.signerNeeded();
         const safe = await this.getExpectedSafe();
 
         const deployed = await this.getDeployed(safe);
         if (deployed) {
-            console.log("Safe already deployed", deployed);
-            throw SAFE_DEPLOYED;
+            console.log("Safe already deployed");
+            return await this.getExpectedSafe();
+            // throw SAFE_DEPLOYED;
         }
         console.log(`Deploying safe ${safe}...`);
         return this._deploy();
