@@ -17,3 +17,10 @@ yarn-debug.log*
 yarn-error.log*
 
 .DS_Store
+
+*.map
+*.js.map
+*.ts.map
+*.d.ts.map
+*.d.ts
+*.js
